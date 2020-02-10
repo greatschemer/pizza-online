@@ -18,8 +18,8 @@ function App() {
     return (
         <>
             <GlobalStyle />
-            <Banner />
             <Navbar />
+            <Banner />
         </>
     );
 }
