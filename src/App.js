@@ -10,8 +10,8 @@ import {useOpenFood} from "./Hooks/useOpenFood";
 import {useOrders} from "./Hooks/useOrders";
 import {useTitle} from "./Hooks/useTitle";
 import {useAuthentication} from "./Hooks/useAuthentication";
-
-// const database = window.firebase.database();
+import {OrderDialog} from "./Order/OrderDialog";
+import {useOrderDialog} from "./Hooks/useOrderDialog";
 // const refTest = database.ref('testObj').push();
 // refTest.set({
 //     hello: 'world'
@@ -21,6 +21,7 @@ function App() {
     const openFood = useOpenFood();
     const orders = useOrders();
     const auth = useAuthentication();
+    const orderDialog = useOrderDialog();
     useTitle({...openFood, ...orders});
 
     return (
@@ -28,7 +29,7 @@ function App() {
             <GlobalStyle/>
             <FoodDialog {...openFood} {...orders} />
             <Navbar {...auth} />
-            <Order {...orders} {...openFood} {...auth} />
+            <Order {...orders} {...openFood} {...auth} {...orderDialog} />
             <Banner/>
             <Menu {...openFood} />
         </>

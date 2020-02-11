@@ -150,7 +150,7 @@ export function Order({ orders, setOrders, setOpenFood, login, loggedIn, setOpen
                     } else {
                         login();
                     }
-                }}>Checkout</ConfirmButton>
+                }}>Заказать</ConfirmButton>
             </DialogFooter> }
         </OrderStyled>
     );
