@@ -1,12 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 import {
-    DialogContent,
-    DialogFooter,
-    ConfirmButton
+  DialogContent,
+  DialogFooter,
+  ConfirmButton
 } from "../FoodDialog/FoodDialog";
-import {formatPrice} from "../Data/FoodData";
-import {getPrice} from "../FoodDialog/FoodDialog";
+import { formatPrice } from "../Data/FoodData";
+import { getPrice } from "../FoodDialog/FoodDialog";
 const database = window.firebase.database();
 
 const OrderStyled = styled.div`
@@ -30,15 +30,15 @@ const OrderContent = styled(DialogContent)`
 const OrderContainer = styled.div`
   padding: 10px 0px;
   border-bottom: 1px solid grey;
-  ${({editable}) =>
+  ${({ editable }) =>
     editable
-        ? `
+      ? `
     &:hover {
       cursor: pointer;
       background-color: #e7e7e7;
     }
   `
-        : `
+      : `
     pointer-events: none; 
   `}
 `;
@@ -57,101 +57,114 @@ const DetailItem = styled.div`
 `;
 
 function sendOrder(orders, { email, displayName }) {
-    let newOrderRef = database.ref("orders").push();
-    const newOrders = orders.map(order => {
-        return Object.keys(order).reduce((acc, orderKey) => {
-            if (!order[orderKey]) {
-                // undefined value
-                return acc;
-            }
-            if (orderKey === "toppings") {
-                return {
-                    ...acc,
-                    [orderKey]: order[orderKey]
-                        .filter(({ checked }) => checked)
-                        .map(({ name }) => name)
-                };
-            }
-            return {
-                ...acc,
-                [orderKey]: order[orderKey]
-            };
-        }, {});
-    });
-    newOrderRef.set({
-        order: newOrders,
-        email,
-        displayName
-    });
+  let newOrderRef = database.ref("orders").push();
+  const newOrders = orders.map(order => {
+    return Object.keys(order).reduce((acc, orderKey) => {
+      if (!order[orderKey]) {
+        return acc;
+      }
+      if (orderKey === "toppings") {
+        return {
+          ...acc,
+          [orderKey]: order[orderKey]
+            .filter(({ checked }) => checked)
+            .map(({ name }) => name)
+        };
+      }
+      return {
+        ...acc,
+        [orderKey]: order[orderKey]
+      };
+    }, {});
+  });
+  newOrderRef.set({
+    order: newOrders,
+    email,
+    displayName
+  });
 }
 
-export function Order({ orders, setOrders, setOpenFood, login, loggedIn, setOpenOrderDialog }) {
-    const total = orders.reduce((total, order) => {
-        return total + getPrice(order);
-    }, 0);
+export function Order({
+  orders,
+  setOrders,
+  setOpenFood,
+  login,
+  loggedIn,
+  setOpenOrderDialog
+}) {
+  const total = orders.reduce((total, order) => {
+    return total + getPrice(order);
+  }, 0);
 
-    const deleteItem = index => {
-        const newOrders = [...orders];
-        newOrders.splice(index, 1);
-        setOrders(newOrders);
-    };
+  const deleteItem = index => {
+    const newOrders = [...orders];
+    newOrders.splice(index, 1);
+    setOrders(newOrders);
+  };
 
-    return (
-        <OrderStyled>
-            {orders.length === 0 ? (
-                <OrderContent>Вы ничего не выбрали.</OrderContent>
-            ) : (
-                <OrderContent>
-                    {" "}
-                    <OrderContainer> Ваш заказ: </OrderContainer>{" "}
-                    {orders.map((order, index) => (
-                        <OrderContainer key={index} editable>
-                            <OrderItem
-                                onClick={() => {
-                                    setOpenFood({...order, index});
-                                }}
-                            >
-                                <div>{order.quantity} шт.</div>
-                                <div>{order.name}</div>
-                                <div>{formatPrice(getPrice(order))}</div>
-                                <div
-                                    style={{cursor: "pointer"}}
-                                    onClick={e => {
-                                        e.stopPropagation();
-                                        deleteItem(index);
-                                    }}
-                                >
-                                    ❌
-                                </div>
-                            </OrderItem>
-                            <DetailItem>
-                                {order.toppings
-                                    .filter(t => t.checked)
-                                    .map(topping => topping.name)
-                                    .join(", ")}
-                            </DetailItem>
-                            {order.choice && <DetailItem>{order.choice}</DetailItem>}
-                        </OrderContainer>
-                    ))}
-                    <OrderContainer>
-                        <OrderItem>
-                            <div/>
-                            <div>Всего</div>
-                            <div>{formatPrice(total)}</div>
-                        </OrderItem>
-                    </OrderContainer>
-                </OrderContent>
-            )}
-            {orders.length > 0 && <DialogFooter>
-                <ConfirmButton onClick={() => {
-                    if (loggedIn) {
-                        setOpenOrderDialog(true);
-                        sendOrder(orders, loggedIn);
-                    } else {
-                        login();
-                    }
-                }}>Заказать</ConfirmButton>
-            </DialogFooter> }
-        </OrderStyled>
-    );
+  return (
+    <OrderStyled>
+      {orders.length === 0 ? (
+        <OrderContent>Вы ничего не выбрали.</OrderContent>
+      ) : (
+        <OrderContent>
+          {" "}
+          <OrderContainer> Ваш заказ: </OrderContainer>{" "}
+          {orders.map((order, index) => (
+            <OrderContainer key={index} editable>
+              <OrderItem
+                onClick={() => {
+                  setOpenFood({ ...order, index });
+                }}
+              >
+                <div>{order.quantity} шт.</div>
+                <div>{order.name}</div>
+                <div>{formatPrice(getPrice(order))}</div>
+                {/* eslint-disable-next-line jsx-a11y/accessible-emoji */}
+                <div
+                  style={{ cursor: "pointer" }}
+                  onClick={e => {
+                    e.stopPropagation();
+                    deleteItem(index);
+                  }}
+                >
+                  ❌
+                </div>
+              </OrderItem>
+              <DetailItem>
+                {order.toppings
+                  .filter(t => t.checked)
+                  .map(topping => topping.name)
+                  .join(", ")}
+              </DetailItem>
+              {order.choice && <DetailItem>{order.choice}</DetailItem>}
+            </OrderContainer>
+          ))}
+          <OrderContainer>
+            <OrderItem>
+              <div />
+              <div>Всего</div>
+              <div>{formatPrice(total)}</div>
+            </OrderItem>
+          </OrderContainer>
+        </OrderContent>
+      )}
+      {orders.length > 0 && (
+        <DialogFooter>
+          <ConfirmButton
+            onClick={() => {
+              if (loggedIn) {
+                setOpenOrderDialog(true);
+                sendOrder(orders, loggedIn);
+              } else {
+                login();
+              }
+            }}
+          >
+            Заказать
+          </ConfirmButton>
+        </DialogFooter>
+      )}
+    </OrderStyled>
+  );
 }

@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import {Title} from "../Styles/title";
-import {pizzaRed} from "../Styles/colors";
+import { Title } from "../Styles/title";
+import { pizzaRed } from "../Styles/colors";
 
 const QuantityInputStyled = styled.input`
   font-size: 18px;
@@ -25,7 +25,7 @@ const IncrementButton = styled.div`
   line-height: 23px;
   margin: 0px 10px;
   border: 1px solid ${pizzaRed};
-  ${({disabled}) =>
+  ${({ disabled }) =>
     disabled &&
     `opacity: 0.5; 
      pointer-events: none; 
@@ -35,26 +35,26 @@ const IncrementButton = styled.div`
   }
 `;
 
-export function QuantityInput({quantity}) {
-    return (
-        <IncrementContainer>
-            <div>Количество:</div>
-            <IncrementButton
-                onClick={() => {
-                    quantity.setValue(quantity.value - 1);
-                }}
-                disabled={quantity.value === 1}
-            >
-                -
-            </IncrementButton>
-            <QuantityInputStyled {...quantity} />
-            <IncrementButton
-                onClick={() => {
-                    quantity.setValue(quantity.value + 1);
-                }}
-            >
-                +
-            </IncrementButton>
-        </IncrementContainer>
-    );
+export function QuantityInput({ quantity }) {
+  return (
+    <IncrementContainer>
+      <div>Количество:</div>
+      <IncrementButton
+        onClick={() => {
+          quantity.setValue(quantity.value - 1);
+        }}
+        disabled={quantity.value === 1}
+      >
+        -
+      </IncrementButton>
+      <QuantityInputStyled {...quantity} />
+      <IncrementButton
+        onClick={() => {
+          quantity.setValue(quantity.value + 1);
+        }}
+      >
+        +
+      </IncrementButton>
+    </IncrementContainer>
+  );
 }

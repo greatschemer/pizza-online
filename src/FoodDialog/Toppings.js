@@ -15,21 +15,21 @@ const CheckboxLabel = styled.label`
   cursor: pointer;
 `;
 
-export function Toppings({toppings, checkTopping}) {
-    return (
-        <ToppingGrid>
-            {toppings.map((topping, i) => (
-                <CheckboxLabel key={i}>
-                    <ToppingCheckbox
-                        type="checkbox"
-                        defaultChecked={topping.checked}
-                        onClick={() => {
-                            checkTopping(i);
-                        }}
-                    />
-                    {topping.name}
-                </CheckboxLabel>
-            ))}
-        </ToppingGrid>
-    );
+export function Toppings({ toppings, checkTopping }) {
+  return (
+    <ToppingGrid>
+      {toppings.map((topping, i) => (
+        <CheckboxLabel key={i}>
+          <ToppingCheckbox
+            type="checkbox"
+            defaultChecked={topping.checked}
+            onClick={() => {
+              checkTopping(i);
+            }}
+          />
+          {topping.name}
+        </CheckboxLabel>
+      ))}
+    </ToppingGrid>
+  );
 }

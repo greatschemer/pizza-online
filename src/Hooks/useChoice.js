@@ -1,14 +1,14 @@
-import {useState} from "react";
+import { useState } from "react";
 
 export function useChoice(defaultChoice) {
-    const [value, setValue] = useState(defaultChoice);
+  const [value, setValue] = useState(defaultChoice);
 
-    function onChange(e) {
-        setValue(e.target.value);
-    }
+  function onChange(e) {
+    setValue(e.target.value);
+  }
 
-    return {
-        value,
-        onChange
-    };
+  return {
+    value,
+    onChange
+  };
 }

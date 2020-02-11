@@ -4,34 +4,30 @@ const auth = window.firebase.auth();
 const provider = new window.firebase.auth.GoogleAuthProvider();
 
 export function useAuthentication() {
-    const [authenticated, setAuthenticated] = useState('loading');
+  const [authenticated, setAuthenticated] = useState("loading");
 
-    function login(){
-        auth.signInWithPopup(provider);
-    }
+  function login() {
+    auth.signInWithPopup(provider);
+  }
 
-    function logout() {
-        auth
-            .signOut()
-            .then(function() {
-                // Sign-out successful.
-            })
-            .catch(function(error) {
-                // An error happened.
-            });
-    }
+  function logout() {
+    auth.signOut();
+  }
 
-    useEffect(() => {
-        auth.onAuthStateChanged(function(user){
-            if(user){
-                setAuthenticated(user);
-            }else{
-                setAuthenticated();
-            }
-        }, function(error){
-            console.log(error);
-        });
-    }, []);
+  useEffect(() => {
+    auth.onAuthStateChanged(
+      function(user) {
+        if (user) {
+          setAuthenticated(user);
+        } else {
+          setAuthenticated();
+        }
+      },
+      function(error) {
+        console.log(error);
+      }
+    );
+  }, []);
 
-    return {login, logout, loggedIn: authenticated};
+  return { login, logout, loggedIn: authenticated };
 }
