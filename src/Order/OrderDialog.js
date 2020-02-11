@@ -6,9 +6,9 @@ export function OrderDialog({openOrderDialog, setOpenOrderDialog, setOrders}){
     <DialogShadow/>
     <Dialog>
       <DialogContent>
-        <h2>🚚 Your order is on the way! </h2>
+        <h2>🚚 Заказ уже в пути! </h2>
         <p>
-          You have been emailed confirmation of your order. Thanks for choosing Sliceline.
+          Ваш заказ принят и скоро будет доставлен.
         </p>
       </DialogContent>
       <DialogFooter>
@@ -16,7 +16,7 @@ export function OrderDialog({openOrderDialog, setOpenOrderDialog, setOrders}){
           setOrders([]);
           setOpenOrderDialog();
         }}>
-          I'm still hungry
+          OK
         </ConfirmButton>
       </DialogFooter>
     </Dialog>
